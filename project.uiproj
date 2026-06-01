@@ -1,0 +1,6 @@
+{
+  "Name": "VacationManagement",
+  "ProjectType": "Process",
+  "Description": "Process",
+  "MainFile": "Main.xaml"
+}
