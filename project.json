@@ -4,6 +4,8 @@
   "description": "Process",
   "main": "Main.xaml",
   "dependencies": {
+    "UiPath.GSuite.Activities": "[3.9.10]",
+    "UiPath.MicrosoftOffice365.Activities": "[3.9.11]",
     "UiPath.System.Activities": "[26.2.6]"
   },
   "webServices": [],
