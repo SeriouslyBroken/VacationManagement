@@ -1,0 +1,4 @@
+﻿{
+  "UiPath.GSuite.Activities.GenericGSuite.RequestTimeoutSeconds": "0",
+  "UiPath.GSuite.Activities.GenericGSuite.RetryTimeoutSeconds": "0"
+}
