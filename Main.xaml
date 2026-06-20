@@ -1,4 +1,4 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="Main" VisualBasic.Settings="{x:Null}" sap2010:WorkflowViewState.IdRef="ActivityBuilder_1" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:s="clr-namespace:System;assembly=System.Private.CoreLib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="Main" VisualBasic.Settings="{x:Null}" sap:VirtualizedContainerService.HintSize="599.6,594.4" sap2010:WorkflowViewState.IdRef="ActivityBuilder_1" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:s="clr-namespace:System;assembly=System.Private.CoreLib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <TextExpression.NamespacesForImplementation>
     <sco:Collection x:TypeArguments="x:String">
       <x:String>System.Activities</x:String>
@@ -72,64 +72,84 @@
       <AssemblyReference>System.Collections.NonGeneric</AssemblyReference>
       <AssemblyReference>System.Linq.Expressions</AssemblyReference>
       <AssemblyReference>NPOI.Core</AssemblyReference>
+      <AssemblyReference>UiPath.Excel.Activities.Design</AssemblyReference>
+      <AssemblyReference>System.Private.ServiceModel</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="Main Sequence" sap:VirtualizedContainerService.HintSize="500,428.05666666666673" sap2010:WorkflowViewState.IdRef="Sequence_1">
-    <Sequence.Variables>
-      <Variable x:TypeArguments="x:Boolean" Name="main_IsConflict" />
-      <Variable x:TypeArguments="s:DateTime" Name="main_StartDate" />
-      <Variable x:TypeArguments="s:DateTime" Name="main_EndDate" />
-      <Variable x:TypeArguments="x:String" Name="main_EmployeeID" />
-    </Sequence.Variables>
+  <TryCatch DisplayName="Try — Main Orchestration" sap:VirtualizedContainerService.HintSize="501.6,639.2" sap2010:WorkflowViewState.IdRef="TryCatch_1">
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" DisplayName="ExtractEmail - Invoke Workflow File (ExtractEmail.xaml)" sap:VirtualizedContainerService.HintSize="480,48" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="ExtractEmail.xaml">
-      <ui:InvokeWorkflowFile.Arguments>
-        <InArgument x:TypeArguments="x:String" x:Key="out_EmployeeID">[main_EmployeeID]</InArgument>
-        <InArgument x:TypeArguments="s:DateTime" x:Key="out_EndDate">[main_EndDate]</InArgument>
-        <InArgument x:TypeArguments="s:DateTime" x:Key="out_StartDate">[main_StartDate]</InArgument>
-      </ui:InvokeWorkflowFile.Arguments>
-      <sap:WorkflowViewStateService.ViewState>
-        <scg:Dictionary x:TypeArguments="x:String, x:Object">
-          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
-        </scg:Dictionary>
-      </sap:WorkflowViewStateService.ViewState>
-    </ui:InvokeWorkflowFile>
-    <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" DisplayName="ConflictCheck - Invoke Workflow File (ConflictCheck.xaml)" sap:VirtualizedContainerService.HintSize="480,48" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="ConflictCheck.xaml">
-      <ui:InvokeWorkflowFile.Arguments>
-        <InArgument x:TypeArguments="x:Boolean" x:Key="out_IsConflict">[main_IsConflict]</InArgument>
-        <InArgument x:TypeArguments="x:String" x:Key="in_EmployeeID">[main_EmployeeID]</InArgument>
-        <InArgument x:TypeArguments="s:DateTime" x:Key="in_StartDate">[main_StartDate]</InArgument>
-        <InArgument x:TypeArguments="s:DateTime" x:Key="in_EndDate">[main_EndDate]</InArgument>
-      </ui:InvokeWorkflowFile.Arguments>
-      <sap:WorkflowViewStateService.ViewState>
-        <scg:Dictionary x:TypeArguments="x:String, x:Object">
-          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
-        </scg:Dictionary>
-      </sap:WorkflowViewStateService.ViewState>
-    </ui:InvokeWorkflowFile>
-    <If Condition="[main_IsConflict=True]" sap:VirtualizedContainerService.HintSize="480,264" sap2010:WorkflowViewState.IdRef="If_1">
-      <If.Then>
-        <Sequence DisplayName="Then" sap:VirtualizedContainerService.HintSize="480,96" sap2010:WorkflowViewState.IdRef="Sequence_2">
+    <TryCatch.Try>
+      <Sequence DisplayName="Main Sequence" sap:VirtualizedContainerService.HintSize="500,221.6" sap2010:WorkflowViewState.IdRef="Sequence_1">
+        <Sequence.Variables>
+          <Variable x:TypeArguments="x:Boolean" Name="main_IsConflict" />
+          <Variable x:TypeArguments="s:DateTime" Name="main_StartDate" />
+          <Variable x:TypeArguments="s:DateTime" Name="main_EndDate" />
+          <Variable x:TypeArguments="x:String" Name="main_EmployeeID" />
+        </Sequence.Variables>
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+        <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" DisplayName="ExtractEmail — Invoke Workflow File" sap:VirtualizedContainerService.HintSize="466.4,56.8" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="ExtractEmail.xaml">
+          <ui:InvokeWorkflowFile.Arguments>
+            <OutArgument x:TypeArguments="x:String" x:Key="out_EmployeeID">[main_EmployeeID]</OutArgument>
+            <OutArgument x:TypeArguments="s:DateTime" x:Key="out_StartDate">[main_StartDate]</OutArgument>
+            <OutArgument x:TypeArguments="s:DateTime" x:Key="out_EndDate">[main_EndDate]</OutArgument>
+          </ui:InvokeWorkflowFile.Arguments>
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
-              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+              <x:Boolean x:Key="IsExpanded">False</x:Boolean>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
-        </Sequence>
-      </If.Then>
-      <If.Else>
-        <Sequence DisplayName="Else" sap:VirtualizedContainerService.HintSize="480,96" sap2010:WorkflowViewState.IdRef="Sequence_3">
+        </ui:InvokeWorkflowFile>
+        <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" DisplayName="ConflictCheck — Invoke Workflow File" sap:VirtualizedContainerService.HintSize="466.4,56.8" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="ConflictCheck.xaml">
+          <ui:InvokeWorkflowFile.Arguments>
+            <InArgument x:TypeArguments="s:DateTime" x:Key="in_StartDate">[main_StartDate]</InArgument>
+            <InArgument x:TypeArguments="s:DateTime" x:Key="in_EndDate">[main_EndDate]</InArgument>
+            <OutArgument x:TypeArguments="x:Boolean" x:Key="out_IsConflict">[main_IsConflict]</OutArgument>
+          </ui:InvokeWorkflowFile.Arguments>
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
-              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+              <x:Boolean x:Key="IsExpanded">False</x:Boolean>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
-        </Sequence>
-      </If.Else>
-    </If>
-  </Sequence>
+        </ui:InvokeWorkflowFile>
+        <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" DisplayName="ManagerReview — Invoke Workflow File" sap:VirtualizedContainerService.HintSize="466.4,48" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="ManagerReview.xaml">
+          <ui:InvokeWorkflowFile.Arguments>
+            <InArgument x:TypeArguments="x:Boolean" x:Key="in_IsConflict">[main_IsConflict]</InArgument>
+            <InArgument x:TypeArguments="x:String" x:Key="in_EmployeeID">[main_EmployeeID]</InArgument>
+            <InArgument x:TypeArguments="s:DateTime" x:Key="in_StartDate">[main_StartDate]</InArgument>
+            <InArgument x:TypeArguments="s:DateTime" x:Key="in_EndDate">[main_EndDate]</InArgument>
+          </ui:InvokeWorkflowFile.Arguments>
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+        </ui:InvokeWorkflowFile>
+      </Sequence>
+    </TryCatch.Try>
+    <TryCatch.Catches>
+      <Catch x:TypeArguments="ui:BusinessRuleException" sap2010:WorkflowViewState.IdRef="Catch`1_1">
+        <ActivityAction x:TypeArguments="ui:BusinessRuleException">
+          <ActivityAction.Argument>
+            <DelegateInArgument x:TypeArguments="ui:BusinessRuleException" Name="exception" />
+          </ActivityAction.Argument>
+          <Sequence DisplayName="Handle — BusinessRuleException" sap:VirtualizedContainerService.HintSize="500,225.6" sap2010:WorkflowViewState.IdRef="Sequence_2">
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+            <ui:LogMessage DisplayName="Log — BusinessRuleException Caught" sap:VirtualizedContainerService.HintSize="466.4,165.6" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Error" Message="[&quot;[ERROR] BusinessRuleException intercepted — &quot; &amp; exception.Message]" />
+          </Sequence>
+        </ActivityAction>
+      </Catch>
+    </TryCatch.Catches>
+  </TryCatch>
 </Activity>
