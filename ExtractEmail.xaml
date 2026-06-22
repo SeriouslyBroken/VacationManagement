@@ -1,92 +1,95 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="ExtractEmail"
-  xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
-  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-  xmlns:s="clr-namespace:System;assembly=System.Private.CoreLib"
-  xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"
-  xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation"
-  xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib"
-  xmlns:ui="http://schemas.uipath.com/workflow/activities"
-  xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib"
-  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-
-  <!-- ARGUMENTS OUT -->
+<Activity mc:Ignorable="sap sap2010" x:Class="ExtractEmail" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:s="clr-namespace:System;assembly=System.Private.CoreLib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property Name="out_EmployeeID" Type="OutArgument(x:String)" />
-    <x:Property Name="out_StartDate"  Type="OutArgument(s:DateTime)" />
-    <x:Property Name="out_EndDate"    Type="OutArgument(s:DateTime)" />
+    <x:Property Name="out_StartDate" Type="OutArgument(s:DateTime)" />
+    <x:Property Name="out_EndDate" Type="OutArgument(s:DateTime)" />
   </x:Members>
-
-  <VisualBasic.Settings><x:Null /></VisualBasic.Settings>
-
+  <VisualBasic.Settings>
+    <x:Null />
+  </VisualBasic.Settings>
+  <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <sco:Collection x:TypeArguments="x:String">
+      <x:String>GlobalConstantsNamespace</x:String>
+      <x:String>GlobalVariablesNamespace</x:String>
+      <x:String>Microsoft.VisualBasic</x:String>
+      <x:String>Microsoft.VisualBasic.Activities</x:String>
       <x:String>System</x:String>
       <x:String>System.Activities</x:String>
       <x:String>System.Activities.Statements</x:String>
-      <x:String>Microsoft.VisualBasic</x:String>
-      <x:String>Microsoft.VisualBasic.Activities</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Collections.ObjectModel</x:String>
+      <x:String>System.Linq</x:String>
       <x:String>UiPath.Core</x:String>
       <x:String>UiPath.Core.Activities</x:String>
     </sco:Collection>
   </TextExpression.NamespacesForImplementation>
-
   <TextExpression.ReferencesForImplementation>
     <sco:Collection x:TypeArguments="AssemblyReference">
       <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
       <AssemblyReference>mscorlib</AssemblyReference>
       <AssemblyReference>System</AssemblyReference>
       <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.TypeConverter</AssemblyReference>
+      <AssemblyReference>System.Linq</AssemblyReference>
+      <AssemblyReference>System.ObjectModel</AssemblyReference>
       <AssemblyReference>System.Private.CoreLib</AssemblyReference>
       <AssemblyReference>UiPath.System.Activities</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
-
-  <!-- ═══════════════════════════════════════════
-       STUB TEST — valeurs hardcodées
-       Remplacer par la vraie lecture email plus tard
-       ═══════════════════════════════════════════ -->
-  <Sequence DisplayName="ExtractEmail [STUB TEST]" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence DisplayName="ExtractEmail [STUB TEST]" sap:VirtualizedContainerService.HintSize="759,1213.256666666667" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-
-    <!-- Log pour confirmer que le stub est bien appelé -->
-    <ui:LogMessage DisplayName="[STUB] ExtractEmail — simulation email entrant"
-      Level="Info"
-      Message="[&quot;[STUB] Simulation d'un email de demande de congé — EMP001 | 01/07/2026 → 10/07/2026&quot;]"
-      sap2010:WorkflowViewState.IdRef="LogMessage_1" />
-
-    <!-- out_EmployeeID -->
-    <Assign DisplayName="Assign — out_EmployeeID = EMP001" sap2010:WorkflowViewState.IdRef="Assign_1">
+    <ui:LogMessage sap2010:Annotation.AnnotationText="Extracts Email " DisplayName="[STUB] ExtractEmail — simulation email entrant" sap:VirtualizedContainerService.HintSize="449.6,48" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[&quot;[STUB] Simulation d'un email de demande de congé — EMP001 | 01/07/2026 → 10/07/2026&quot;]">
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+          <x:Boolean x:Key="IsAnnotationDocked">False</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+    </ui:LogMessage>
+    <Assign sap2010:Annotation.AnnotationText="Assigns extracted Email data to an Employee in the variable out_EmployeeID" DisplayName="Assign — out_EmployeeID = EMP001" sap:VirtualizedContainerService.HintSize="449.6,48" sap2010:WorkflowViewState.IdRef="Assign_1">
       <Assign.To>
         <OutArgument x:TypeArguments="x:String">[out_EmployeeID]</OutArgument>
       </Assign.To>
       <Assign.Value>
-        <InArgument x:TypeArguments="x:String">[&quot;EMP001&quot;]</InArgument>
+        <InArgument x:TypeArguments="x:String">["EMP001"]</InArgument>
       </Assign.Value>
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+          <x:Boolean x:Key="IsAnnotationDocked">False</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
     </Assign>
-
-    <!-- out_StartDate -->
-    <Assign DisplayName="Assign — out_StartDate = 01/07/2026" sap2010:WorkflowViewState.IdRef="Assign_2">
+    <Assign DisplayName="Assign — out_StartDate = 01/07/2026" sap:VirtualizedContainerService.HintSize="449.6,48" sap2010:WorkflowViewState.IdRef="Assign_2">
       <Assign.To>
         <OutArgument x:TypeArguments="s:DateTime">[out_StartDate]</OutArgument>
       </Assign.To>
       <Assign.Value>
         <InArgument x:TypeArguments="s:DateTime">[New DateTime(2026, 7, 1)]</InArgument>
       </Assign.Value>
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
     </Assign>
-
-    <!-- out_EndDate -->
-    <Assign DisplayName="Assign — out_EndDate = 10/07/2026" sap2010:WorkflowViewState.IdRef="Assign_3">
+    <Assign DisplayName="Assign — out_EndDate = 10/07/2026" sap:VirtualizedContainerService.HintSize="449.6,48" sap2010:WorkflowViewState.IdRef="Assign_3">
       <Assign.To>
         <OutArgument x:TypeArguments="s:DateTime">[out_EndDate]</OutArgument>
       </Assign.To>
       <Assign.Value>
         <InArgument x:TypeArguments="s:DateTime">[New DateTime(2026, 7, 10)]</InArgument>
       </Assign.Value>
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
     </Assign>
-
   </Sequence>
 </Activity>
