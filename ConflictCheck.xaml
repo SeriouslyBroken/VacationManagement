@@ -95,7 +95,7 @@
       <AssemblyReference>System.Collections.NonGeneric</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="ConflictCheck" sap:VirtualizedContainerService.HintSize="760.2,600" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence DisplayName="ConflictCheck" sap:VirtualizedContainerService.HintSize="759,1213.256666666667" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="sd:DataTable" Name="dt_DataTable" />
     </Sequence.Variables>
@@ -104,14 +104,15 @@
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:ReadRange Range="{x:Null}" AddHeaders="True" DataTable="[dt_DataTable]" DisplayName="Read Range Workbook" sap:VirtualizedContainerService.HintSize="510.4,48" sap2010:WorkflowViewState.IdRef="ReadRange_1" SheetName="MasterLog" WorkbookPath="VacationDatabase.xlsx">
+    <ui:ReadRange Range="{x:Null}" AddHeaders="True" sap2010:Annotation.AnnotationText="Ingests historical record data form the target Excel workbook spreadsheet into an in-memory data table object for evaluation. " DataTable="[dt_DataTable]" DisplayName="Read Range Workbook" sap:VirtualizedContainerService.HintSize="510.4,89.6" sap2010:WorkflowViewState.IdRef="ReadRange_1" SheetName="MasterLog" WorkbookPath="VacationDatabase.xlsx">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
     </ui:ReadRange>
-    <Assign sap:VirtualizedContainerService.HintSize="510.4,48" sap2010:WorkflowViewState.IdRef="Assign_2">
+    <Assign sap2010:Annotation.AnnotationText="Initialises the default boolean tracking state, assuming no initial conflict exits before analytical execution loops begin." sap:VirtualizedContainerService.HintSize="510.4,89.6" sap2010:WorkflowViewState.IdRef="Assign_2">
       <Assign.To>
         <OutArgument x:TypeArguments="x:Boolean">[out_IsConflict]</OutArgument>
       </Assign.To>
@@ -121,37 +122,44 @@
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
     </Assign>
-    <ui:ForEachRow ColumnNames="{x:Null}" CurrentIndex="{x:Null}" DataTable="[dt_DataTable]" DisplayName="For Each Row in Data Table" sap:VirtualizedContainerService.HintSize="510.4,480" sap2010:WorkflowViewState.IdRef="ForEachRow_1">
+    <ui:ForEachRow ColumnNames="{x:Null}" CurrentIndex="{x:Null}" sap2010:Annotation.AnnotationText="Iterates sequentially through each data record row captured insied the master data table to verify constraints." DataTable="[dt_DataTable]" DisplayName="For Each Row in Data Table" sap:VirtualizedContainerService.HintSize="510.4,612.8" sap2010:WorkflowViewState.IdRef="ForEachRow_1">
       <ui:ForEachRow.Body>
         <ActivityAction x:TypeArguments="sd:DataRow">
           <ActivityAction.Argument>
             <DelegateInArgument x:TypeArguments="sd:DataRow" Name="CurrentRow" />
           </ActivityAction.Argument>
-          <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="510.4,408" sap2010:WorkflowViewState.IdRef="Sequence_2">
+          <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="510.4,499.2" sap2010:WorkflowViewState.IdRef="Sequence_2">
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
                 <x:Boolean x:Key="IsExpanded">True</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
-            <If Condition="[CurrentRow(&quot;EmployeeID&quot;).ToString = in_EmployeeID AndAlso CurrentRow(&quot;Status&quot;).ToString = &quot;Approved&quot; AndAlso NOT (in_EndDate &lt; DateTime.Parse(CurrentRow(&quot;StartDate&quot;).ToString) OrElse in_StartDate &gt; DateTime.Parse(CurrentRow(&quot;EndDate&quot;).ToString))]" sap:VirtualizedContainerService.HintSize="480,360" sap2010:WorkflowViewState.IdRef="If_1">
+            <If sap2010:Annotation.AnnotationText="Checks if Employee ID equals &quot;Approved&quot; and data rnages overlap with existing records." Condition="[CurrentRow(&quot;EmployeeID&quot;).ToString = in_EmployeeID AndAlso CurrentRow(&quot;Status&quot;).ToString = &quot;Approved&quot; AndAlso NOT (in_EndDate &lt; DateTime.Parse(CurrentRow(&quot;StartDate&quot;).ToString) OrElse in_StartDate &gt; DateTime.Parse(CurrentRow(&quot;EndDate&quot;).ToString))]" sap:VirtualizedContainerService.HintSize="480,451.2" sap2010:WorkflowViewState.IdRef="If_1">
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
               <If.Then>
-                <Sequence DisplayName="Then" sap:VirtualizedContainerService.HintSize="480,192" sap2010:WorkflowViewState.IdRef="Sequence_3">
+                <Sequence DisplayName="Then" sap:VirtualizedContainerService.HintSize="480,241.6" sap2010:WorkflowViewState.IdRef="Sequence_3">
                   <sap:WorkflowViewStateService.ViewState>
                     <scg:Dictionary x:TypeArguments="x:String, x:Object">
                       <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                     </scg:Dictionary>
                   </sap:WorkflowViewStateService.ViewState>
-                  <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="449.6,48" sap2010:WorkflowViewState.IdRef="LogMessage_1" Message="[&quot;Attention: Date conflict found! The dates can not be approved.&quot;]">
+                  <ui:LogMessage sap2010:Annotation.AnnotationText="Generates system runtime warning. Indicates date conflict found." DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="449.6,72.8" sap2010:WorkflowViewState.IdRef="LogMessage_1" Message="[&quot;Attention: Date conflict found! The dates can not be approved.&quot;]">
                     <sap:WorkflowViewStateService.ViewState>
                       <scg:Dictionary x:TypeArguments="x:String, x:Object">
                         <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
                       </scg:Dictionary>
                     </sap:WorkflowViewStateService.ViewState>
                   </ui:LogMessage>
-                  <Assign sap:VirtualizedContainerService.HintSize="449.6,48" sap2010:WorkflowViewState.IdRef="Assign_1">
+                  <Assign sap2010:Annotation.AnnotationText="Modifies boolean flag to indicate active conflict." sap:VirtualizedContainerService.HintSize="449.6,72.8" sap2010:WorkflowViewState.IdRef="Assign_1">
                     <Assign.To>
                       <OutArgument x:TypeArguments="x:Boolean">[out_IsConflict]</OutArgument>
                     </Assign.To>
@@ -161,6 +169,7 @@
                     <sap:WorkflowViewStateService.ViewState>
                       <scg:Dictionary x:TypeArguments="x:String, x:Object">
                         <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
                       </scg:Dictionary>
                     </sap:WorkflowViewStateService.ViewState>
                   </Assign>
@@ -186,6 +195,11 @@
           </Sequence>
         </ActivityAction>
       </ui:ForEachRow.Body>
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
     </ui:ForEachRow>
   </Sequence>
 </Activity>

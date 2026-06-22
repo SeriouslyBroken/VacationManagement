@@ -43,15 +43,15 @@
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:LogMessage sap2010:Annotation.AnnotationText="Extracts Email " DisplayName="[STUB] ExtractEmail — simulation email entrant" sap:VirtualizedContainerService.HintSize="449.6,48" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[&quot;[STUB] Simulation d'un email de demande de congé — EMP001 | 01/07/2026 → 10/07/2026&quot;]">
+    <ui:LogMessage sap2010:Annotation.AnnotationText="Standard system execution trace reporting mock baseline information tracking properties to the local console" DisplayName="[STUB] ExtractEmail — simulation email entrant" sap:VirtualizedContainerService.HintSize="449.6,89.6" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[&quot;[STUB] Simulation d'un email de demande de congé — EMP001 | 01/07/2026 → 10/07/2026&quot;]">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsExpanded">False</x:Boolean>
-          <x:Boolean x:Key="IsAnnotationDocked">False</x:Boolean>
+          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
     </ui:LogMessage>
-    <Assign sap2010:Annotation.AnnotationText="Assigns extracted Email data to an Employee in the variable out_EmployeeID" DisplayName="Assign — out_EmployeeID = EMP001" sap:VirtualizedContainerService.HintSize="449.6,48" sap2010:WorkflowViewState.IdRef="Assign_1">
+    <Assign sap2010:Annotation.AnnotationText="Generates a dummy/test identifier string retruned to simulated higher-order parent orchestrations. " DisplayName="Assign — out_EmployeeID = EMP001" sap:VirtualizedContainerService.HintSize="449.6,89.6" sap2010:WorkflowViewState.IdRef="Assign_1">
       <Assign.To>
         <OutArgument x:TypeArguments="x:String">[out_EmployeeID]</OutArgument>
       </Assign.To>
@@ -61,11 +61,11 @@
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsExpanded">False</x:Boolean>
-          <x:Boolean x:Key="IsAnnotationDocked">False</x:Boolean>
+          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
     </Assign>
-    <Assign DisplayName="Assign — out_StartDate = 01/07/2026" sap:VirtualizedContainerService.HintSize="449.6,48" sap2010:WorkflowViewState.IdRef="Assign_2">
+    <Assign sap2010:Annotation.AnnotationText="Standardises mock start date generation parameters for testing boundary calculations" DisplayName="Assign — out_StartDate = 01/07/2026" sap:VirtualizedContainerService.HintSize="449.6,89.6" sap2010:WorkflowViewState.IdRef="Assign_2">
       <Assign.To>
         <OutArgument x:TypeArguments="s:DateTime">[out_StartDate]</OutArgument>
       </Assign.To>
@@ -75,10 +75,11 @@
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
     </Assign>
-    <Assign DisplayName="Assign — out_EndDate = 10/07/2026" sap:VirtualizedContainerService.HintSize="449.6,48" sap2010:WorkflowViewState.IdRef="Assign_3">
+    <Assign sap2010:Annotation.AnnotationText="Standardises mock end date generation parameters for testing boundary generation" DisplayName="Assign — out_EndDate = 10/07/2026" sap:VirtualizedContainerService.HintSize="449.6,89.6" sap2010:WorkflowViewState.IdRef="Assign_3">
       <Assign.To>
         <OutArgument x:TypeArguments="s:DateTime">[out_EndDate]</OutArgument>
       </Assign.To>
@@ -88,6 +89,7 @@
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
     </Assign>
