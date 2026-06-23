@@ -151,7 +151,7 @@
                 <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
-            <ui:LogMessage sap2010:Annotation.AnnotationText="logs any BusinessRuleException with an error-level message, including the exception details" DisplayName="Log — BusinessRuleException Caught" sap:VirtualizedContainerService.HintSize="419.2,210.4" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Error" Message="[&quot;[ERROR] BusinessRuleException intercepted — &quot; &amp; exception.Message]">
+            <ui:LogMessage sap2010:Annotation.AnnotationText="logs any BusinessRuleException with an error-level message, including the exception details" DisplayName="Log — BusinessRuleException Caught" sap:VirtualizedContainerService.HintSize="419.2,210.4" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Error" Message="[&quot;[ERROR] BusinessRuleException intercepted -- &quot; &amp; exception.Message]">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                   <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
