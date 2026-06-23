@@ -85,7 +85,7 @@
       <AssemblyReference>System.Runtime.Serialization.Primitives</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="ManagerReview" sap:VirtualizedContainerService.HintSize="599.6,4352.8" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence DisplayName="ManagerReview" sap:VirtualizedContainerService.HintSize="1029.2,4352.8" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="sd:DataTable" Name="dt_Log" />
       <Variable x:TypeArguments="x:Int32" Name="int_RowIndex" />
@@ -130,7 +130,7 @@
         </usau:BackupSlot>
       </uga:SendEmailConnections.InputTypeBackup>
     </uga:SendEmailConnections>
-    <While DisplayName="While — Polling décision manager (10s)" sap:VirtualizedContainerService.HintSize="494.4,766.4" sap2010:WorkflowViewState.IdRef="While_1" Condition="[str_CurrentStatus = &quot;Pending&quot;]">
+    <While DisplayName="While — Polling decision manager (10s)" sap:VirtualizedContainerService.HintSize="494.4,766.4" sap2010:WorkflowViewState.IdRef="While_1" Condition="[str_CurrentStatus = &quot;Pending&quot;]">
       <Sequence DisplayName="Polling Iteration" sap:VirtualizedContainerService.HintSize="449.6,574.4" sap2010:WorkflowViewState.IdRef="Sequence_2">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -138,8 +138,8 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
         <Delay DisplayName="Delay — 10 secondes" Duration="[System.TimeSpan.FromSeconds(10)]" sap:VirtualizedContainerService.HintSize="416,122.4" sap2010:WorkflowViewState.IdRef="Delay_1" />
-        <ui:ReadRange AddHeaders="False" DataTable="[dt_StatusCheck]" DisplayName="Read Range — Cellule D (Status) → dt_StatusCheck" sap:VirtualizedContainerService.HintSize="416,226.4" sap2010:WorkflowViewState.IdRef="ReadRange_2" Range="[&quot;D&quot; &amp; int_RowIndex.ToString()]" SheetName="[&quot;MasterLog&quot;]" WorkbookPath="[&quot;VacationDatabase.xlsx&quot;]" />
-        <Assign DisplayName="Assign — str_CurrentStatus = valeur lue" sap:VirtualizedContainerService.HintSize="416,165.6" sap2010:WorkflowViewState.IdRef="Assign_2">
+        <ui:ReadRange AddHeaders="False" DataTable="[dt_StatusCheck]" DisplayName="Read Range — Cell D (Status) → dt_StatusCheck" sap:VirtualizedContainerService.HintSize="416,226.4" sap2010:WorkflowViewState.IdRef="ReadRange_2" Range="[&quot;D&quot; &amp; int_RowIndex.ToString()]" SheetName="[&quot;MasterLog&quot;]" WorkbookPath="[&quot;VacationDatabase.xlsx&quot;]" />
+        <Assign DisplayName="Assign — str_CurrentStatus" sap:VirtualizedContainerService.HintSize="416,165.6" sap2010:WorkflowViewState.IdRef="Assign_2">
           <Assign.To>
             <OutArgument x:TypeArguments="x:String">[str_CurrentStatus]</OutArgument>
           </Assign.To>
@@ -149,7 +149,7 @@
         </Assign>
       </Sequence>
     </While>
-    <If Condition="[str_CurrentStatus = &quot;Approved&quot;]" DisplayName="If — Approved ou Denied ?" sap:VirtualizedContainerService.HintSize="494.4,1257.6" sap2010:WorkflowViewState.IdRef="If_1">
+    <If Condition="[str_CurrentStatus = &quot;Approved&quot;]" DisplayName="If — Approved or Denied ?" sap:VirtualizedContainerService.HintSize="494.4,1257.6" sap2010:WorkflowViewState.IdRef="If_1">
       <If.Then>
         <Sequence DisplayName="Then" sap:VirtualizedContainerService.HintSize="449.6,564" sap2010:WorkflowViewState.IdRef="Sequence_3">
           <sap:WorkflowViewStateService.ViewState>
