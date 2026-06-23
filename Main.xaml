@@ -1,4 +1,4 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="Main" VisualBasic.Settings="{x:Null}" sap:VirtualizedContainerService.HintSize="1029.2,800.8" sap2010:WorkflowViewState.IdRef="ActivityBuilder_1" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:s="clr-namespace:System;assembly=System.Private.CoreLib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="Main" VisualBasic.Settings="{x:Null}" sap:VirtualizedContainerService.HintSize="1065.2,983.2" sap2010:WorkflowViewState.IdRef="ActivityBuilder_1" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:s="clr-namespace:System;assembly=System.Private.CoreLib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <TextExpression.NamespacesForImplementation>
     <sco:Collection x:TypeArguments="x:String">
       <x:String>System.Activities</x:String>
@@ -76,7 +76,7 @@
       <AssemblyReference>System.Private.ServiceModel</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
-  <TryCatch sap2010:Annotation.AnnotationText="executes the main sequence of workflows (email extraction, conflict check, and manager review) and catches any BusinessRuleException to log the error message" DisplayName="Try — Main Orchestration" sap:VirtualizedContainerService.HintSize="454.4,776" sap2010:WorkflowViewState.IdRef="TryCatch_1">
+  <TryCatch sap2010:Annotation.AnnotationText="executes the main sequence of workflows (email extraction, conflict check, and manager review) and catches any BusinessRuleException to log the error message" DisplayName="Try — Main Orchestration" sap:VirtualizedContainerService.HintSize="454.4,958.4" sap2010:WorkflowViewState.IdRef="TryCatch_1">
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -84,7 +84,7 @@
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
     <TryCatch.Try>
-      <Sequence DisplayName="Main Sequence" sap:VirtualizedContainerService.HintSize="452.8,221.6" sap2010:WorkflowViewState.IdRef="Sequence_1">
+      <Sequence DisplayName="Main Sequence" sap:VirtualizedContainerService.HintSize="452.8,404" sap2010:WorkflowViewState.IdRef="Sequence_1">
         <Sequence.Variables>
           <Variable x:TypeArguments="x:Boolean" Name="main_IsConflict" />
           <Variable x:TypeArguments="s:DateTime" Name="main_StartDate" />
@@ -96,7 +96,7 @@
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
-        <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" sap2010:Annotation.AnnotationText="reads incoming Gmail emails filtered&#xA;under “Vacation Request” and extracts key data from them" DisplayName="ExtractEmail — Invoke Workflow File" sap:VirtualizedContainerService.HintSize="419.2,56.8" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="ExtractEmail.xaml">
+        <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" sap2010:Annotation.AnnotationText="reads incoming Gmail emails filtered&#xA;under “Vacation Request” and extracts key data from them" DisplayName="ExtractEmail — Invoke Workflow File" sap:VirtualizedContainerService.HintSize="419.2,117.6" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="ExtractEmail.xaml">
           <ui:InvokeWorkflowFile.Arguments>
             <OutArgument x:TypeArguments="x:String" x:Key="out_EmployeeID">[main_EmployeeID]</OutArgument>
             <OutArgument x:TypeArguments="s:DateTime" x:Key="out_StartDate">[main_StartDate]</OutArgument>
@@ -109,7 +109,7 @@
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
         </ui:InvokeWorkflowFile>
-        <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" sap2010:Annotation.AnnotationText="checks for scheduling conflicts by comparing the extracted start and end dates, and returns a boolean result indicating whether a conflict exists" DisplayName="ConflictCheck — Invoke Workflow File" sap:VirtualizedContainerService.HintSize="419.2,56.8" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="ConflictCheck.xaml">
+        <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" sap2010:Annotation.AnnotationText="checks for scheduling conflicts by comparing the extracted start and end dates, and returns a boolean result indicating whether a conflict exists" DisplayName="ConflictCheck — Invoke Workflow File" sap:VirtualizedContainerService.HintSize="419.2,117.6" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="ConflictCheck.xaml">
           <ui:InvokeWorkflowFile.Arguments>
             <InArgument x:TypeArguments="s:DateTime" x:Key="in_StartDate">[main_StartDate]</InArgument>
             <InArgument x:TypeArguments="s:DateTime" x:Key="in_EndDate">[main_EndDate]</InArgument>
@@ -122,7 +122,7 @@
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
         </ui:InvokeWorkflowFile>
-        <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" sap2010:Annotation.AnnotationText="sends the vacation request details (employee ID, start/end dates, and conflict status) to a manager for approval or rejection" DisplayName="ManagerReview — Invoke Workflow File" sap:VirtualizedContainerService.HintSize="419.2,48" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="ManagerReview.xaml">
+        <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" sap2010:Annotation.AnnotationText="sends the vacation request details (employee ID, start/end dates, and conflict status) to a manager for approval or rejection" DisplayName="ManagerReview — Invoke Workflow File" sap:VirtualizedContainerService.HintSize="419.2,108.8" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="ManagerReview.xaml">
           <ui:InvokeWorkflowFile.Arguments>
             <InArgument x:TypeArguments="x:Boolean" x:Key="in_IsConflict">[main_IsConflict]</InArgument>
             <InArgument x:TypeArguments="x:String" x:Key="in_EmployeeID">[main_EmployeeID]</InArgument>
