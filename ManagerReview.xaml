@@ -1,5 +1,7 @@
 <Activity mc:Ignorable="sap sap2010" x:Class="ManagerReview" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:s="clr-namespace:System;assembly=System.Private.CoreLib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data.Common" xmlns:uga="clr-namespace:UiPath.GSuite.Activities;assembly=UiPath.GSuite.Activities" xmlns:ugage="clr-namespace:UiPath.GSuite.Activities.Gmail.Enums;assembly=UiPath.GSuite.Activities" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:upr="clr-namespace:UiPath.Platform.ResourceHandling;assembly=UiPath.Platform" xmlns:usau="clr-namespace:UiPath.Shared.Activities.Utils;assembly=UiPath.GSuite.Activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
+    <x:Property Name="str_EndDate" Type="InArgument(x:String)" />
+    <x:Property Name="str_StartDate" Type="InArgument(x:String)" />
     <x:Property Name="in_EmployeeID" Type="InArgument(x:String)" />
     <x:Property Name="in_StartDate" Type="InArgument(s:DateTime)" />
     <x:Property Name="in_EndDate" Type="InArgument(s:DateTime)" />
@@ -31,8 +33,6 @@
       <x:String>UiPath.Core</x:String>
       <x:String>UiPath.Core.Activities</x:String>
       <x:String>System.Windows.Markup</x:String>
-      <x:String>GlobalVariablesNamespace</x:String>
-      <x:String>GlobalConstantsNamespace</x:String>
       <x:String>UiPath.GSuite.Activities.Gmail.Enums</x:String>
       <x:String>UiPath.Shared.Activities.Utils</x:String>
       <x:String>UiPath.Platform.ResourceHandling</x:String>
@@ -41,6 +41,15 @@
       <x:String>UiPath.Shared.Activities.ConnectionService.Contracts</x:String>
       <x:String>System.Linq.Expressions</x:String>
       <x:String>System.Runtime.Serialization</x:String>
+      <x:String>System.Reflection</x:String>
+      <x:String>System.Numerics</x:String>
+      <x:String>System.ComponentModel</x:String>
+      <x:String>System.Xml.Serialization</x:String>
+      <x:String>GlobalVariablesNamespace</x:String>
+      <x:String>GlobalConstantsNamespace</x:String>
+      <x:String>UiPath.DataTableUtilities</x:String>
+      <x:String>UiPath.Excel</x:String>
+      <x:String>UiPath.Excel.Activities</x:String>
     </sco:Collection>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
@@ -83,13 +92,32 @@
       <AssemblyReference>System.Private.DataContractSerialization</AssemblyReference>
       <AssemblyReference>System.Runtime.Serialization.Formatters</AssemblyReference>
       <AssemblyReference>System.Runtime.Serialization.Primitives</AssemblyReference>
+      <AssemblyReference>System.Reflection.DispatchProxy</AssemblyReference>
+      <AssemblyReference>System.Reflection.TypeExtensions</AssemblyReference>
+      <AssemblyReference>System.Reflection.Metadata</AssemblyReference>
+      <AssemblyReference>UiPath.Excel</AssemblyReference>
+      <AssemblyReference>UiPath.GSuite</AssemblyReference>
+      <AssemblyReference>System.Runtime.Numerics</AssemblyReference>
+      <AssemblyReference>System.CodeDom</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualBasic.Forms</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualBasic.Core</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.EventBasedAsync</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Primitives</AssemblyReference>
+      <AssemblyReference>System.Private.Xml</AssemblyReference>
+      <AssemblyReference>System.Data.SqlClient</AssemblyReference>
+      <AssemblyReference>UiPath.Workflow</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="ManagerReview" sap:VirtualizedContainerService.HintSize="1029.2,4352.8" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence DisplayName="ManagerReview" sap:VirtualizedContainerService.HintSize="540.4,7212" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
+      <Variable x:TypeArguments="sd:DataTable" Name="dt_dataTable" />
+      <Variable x:TypeArguments="x:String" Name="Resolved" />
+      <Variable x:TypeArguments="x:String" Name="Comment" />
       <Variable x:TypeArguments="sd:DataTable" Name="dt_Log" />
       <Variable x:TypeArguments="x:Int32" Name="int_RowIndex" />
-      <Variable x:TypeArguments="x:String" Default="Pending" Name="str_CurrentStatus" />
+      <Variable x:TypeArguments="x:String" Name="str_CurrentStatus" />
       <Variable x:TypeArguments="sd:DataTable" Name="dt_StatusCheck" />
     </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
@@ -97,8 +125,8 @@
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:ReadRange AddHeaders="True" DataTable="[dt_Log]" DisplayName="Read Range — MasterLog → dt_Log" sap:VirtualizedContainerService.HintSize="494.4,226.4" sap2010:WorkflowViewState.IdRef="ReadRange_1" Range="[&quot;&quot;]" SheetName="[&quot;MasterLog&quot;]" WorkbookPath="[&quot;VacationDatabase.xlsx&quot;]" />
-    <Assign DisplayName="Assign — int_RowIndex = dt_Log.Rows.Count + 2" sap:VirtualizedContainerService.HintSize="494.4,174.4" sap2010:WorkflowViewState.IdRef="Assign_1">
+    <ui:ReadRange AddHeaders="True" DataTable="[dt_Log]" DisplayName="Read Range — MasterLog → dt_Log" sap:VirtualizedContainerService.HintSize="521.6,226.4" sap2010:WorkflowViewState.IdRef="ReadRange_1" Range="[&quot;&quot;]" SheetName="[&quot;MasterLog&quot;]" WorkbookPath="[&quot;VacationDatabase.xlsx&quot;]" />
+    <Assign DisplayName="Assign — int_RowIndex = dt_Log.Rows.Count + 2" sap:VirtualizedContainerService.HintSize="521.6,174.4" sap2010:WorkflowViewState.IdRef="Assign_1">
       <Assign.To>
         <OutArgument x:TypeArguments="x:Int32">[int_RowIndex]</OutArgument>
       </Assign.To>
@@ -106,106 +134,219 @@
         <InArgument x:TypeArguments="x:Int32">[dt_Log.Rows.Count + 2]</InArgument>
       </Assign.Value>
     </Assign>
-    <ui:WriteCell Cell="[&quot;A&quot; &amp; int_RowIndex.ToString()]" DisplayName="Write Cell — A : EmployeeID" sap:VirtualizedContainerService.HintSize="494.4,278.4" sap2010:WorkflowViewState.IdRef="WriteCell_1" SheetName="[&quot;MasterLog&quot;]" Text="[in_EmployeeID]" WorkbookPath="[&quot;VacationDatabase.xlsx&quot;]" />
-    <ui:WriteCell Cell="[&quot;B&quot; &amp; int_RowIndex.ToString()]" DisplayName="Write Cell — B : StartDate" sap:VirtualizedContainerService.HintSize="494.4,278.4" sap2010:WorkflowViewState.IdRef="WriteCell_2" SheetName="[&quot;MasterLog&quot;]" Text="[in_StartDate.ToString(&quot;dd/MM/yyyy&quot;)]" WorkbookPath="[&quot;VacationDatabase.xlsx&quot;]" />
-    <ui:WriteCell Cell="[&quot;C&quot; &amp; int_RowIndex.ToString()]" DisplayName="Write Cell — C : EndDate" sap:VirtualizedContainerService.HintSize="494.4,278.4" sap2010:WorkflowViewState.IdRef="WriteCell_3" SheetName="[&quot;MasterLog&quot;]" Text="[in_EndDate.ToString(&quot;dd/MM/yyyy&quot;)]" WorkbookPath="[&quot;VacationDatabase.xlsx&quot;]" />
-    <ui:WriteCell Cell="[&quot;D&quot; &amp; int_RowIndex.ToString()]" DisplayName="Write Cell — D : Status = Pending" sap:VirtualizedContainerService.HintSize="494.4,278.4" sap2010:WorkflowViewState.IdRef="WriteCell_4" SheetName="[&quot;MasterLog&quot;]" Text="[&quot;Pending&quot;]" WorkbookPath="[&quot;VacationDatabase.xlsx&quot;]" />
-    <ui:WriteCell Cell="[&quot;E&quot; &amp; int_RowIndex.ToString()]" DisplayName="Write Cell — E : Timestamp" sap:VirtualizedContainerService.HintSize="494.4,278.4" sap2010:WorkflowViewState.IdRef="WriteCell_5" SheetName="[&quot;MasterLog&quot;]" Text="[Now.ToString(&quot;dd/MM/yyyy HH:mm:ss&quot;)]" WorkbookPath="[&quot;VacationDatabase.xlsx&quot;]" />
-    <uga:SendEmailConnections ArgumentAttachmentPaths="{x:Null}" ArgumentAttachments="{x:Null}" AttachmentPaths="{x:Null}" Bcc="{x:Null}" Cc="{x:Null}" ConnectionAccountName="{x:Null}" ContinueOnError="{x:Null}" ReplyTo="{x:Null}" SingleAttachment="{x:Null}" TextBody="{x:Null}" AttachmentInputMode="UseExisting" AuthScopesInvalid="False" Body="[string.Format(&quot;&lt;P&gt;&lt;SPAN&gt;&amp;quot;Employee &amp;quot; + in_EmployeeID + &amp;quot; requested vacation from &amp;quot; + in_StartDate.ToString(&amp;quot;dd/MM/yyyy&amp;quot;) + &amp;quot; to &amp;quot; + in_EndDate.ToString(&amp;quot;dd/MM/yyyy&amp;quot;) + &amp;quot;. Please update the status in Excel.&amp;quot;&lt;/SPAN&gt;&lt;/P&gt;&quot;)]" ConnectionId="043bd4e8-60db-4b3c-9622-f80513b0310c" DisplayName="Send Email" sap:VirtualizedContainerService.HintSize="494.4,512.8" sap2010:WorkflowViewState.IdRef="SendEmailConnections_1" Importance="Normal" InputType="HTML" SaveAsDraft="True" Subject="[&quot;Vacation Request Pending - &quot; + in_EmployeeID]" To="[New String(){&quot;rpagroup08@gmail.com&quot;}]" UseConnectionService="True">
-      <uga:SendEmailConnections.Attachments>
-        <InArgument x:TypeArguments="scg:IEnumerable(upr:IResource)" />
-      </uga:SendEmailConnections.Attachments>
-      <uga:SendEmailConnections.AttachmentsBackup>
-        <usau:BackupSlot x:TypeArguments="ugage:AttachmentInputMode" StoredValue="UseExisting">
-          <usau:BackupSlot.BackupValues>
-            <scg:Dictionary x:TypeArguments="ugage:AttachmentInputMode, scg:List(x:Object)" />
-          </usau:BackupSlot.BackupValues>
-        </usau:BackupSlot>
-      </uga:SendEmailConnections.AttachmentsBackup>
-      <uga:SendEmailConnections.InputTypeBackup>
-        <usau:BackupSlot x:TypeArguments="ugage:BodyInputType" StoredValue="HTML">
-          <usau:BackupSlot.BackupValues>
-            <scg:Dictionary x:TypeArguments="ugage:BodyInputType, scg:List(x:Object)" />
-          </usau:BackupSlot.BackupValues>
-        </usau:BackupSlot>
-      </uga:SendEmailConnections.InputTypeBackup>
-    </uga:SendEmailConnections>
-    <While DisplayName="While — Polling decision manager (10s)" sap:VirtualizedContainerService.HintSize="494.4,766.4" sap2010:WorkflowViewState.IdRef="While_1" Condition="[str_CurrentStatus = &quot;Pending&quot;]">
-      <Sequence DisplayName="Polling Iteration" sap:VirtualizedContainerService.HintSize="449.6,574.4" sap2010:WorkflowViewState.IdRef="Sequence_2">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-        <Delay DisplayName="Delay — 10 secondes" Duration="[System.TimeSpan.FromSeconds(10)]" sap:VirtualizedContainerService.HintSize="416,122.4" sap2010:WorkflowViewState.IdRef="Delay_1" />
-        <ui:ReadRange AddHeaders="False" DataTable="[dt_StatusCheck]" DisplayName="Read Range — Cell D (Status) → dt_StatusCheck" sap:VirtualizedContainerService.HintSize="416,226.4" sap2010:WorkflowViewState.IdRef="ReadRange_2" Range="[&quot;D&quot; &amp; int_RowIndex.ToString()]" SheetName="[&quot;MasterLog&quot;]" WorkbookPath="[&quot;VacationDatabase.xlsx&quot;]" />
-        <Assign DisplayName="Assign — str_CurrentStatus" sap:VirtualizedContainerService.HintSize="416,165.6" sap2010:WorkflowViewState.IdRef="Assign_2">
-          <Assign.To>
-            <OutArgument x:TypeArguments="x:String">[str_CurrentStatus]</OutArgument>
-          </Assign.To>
-          <Assign.Value>
-            <InArgument x:TypeArguments="x:String">[dt_StatusCheck.Rows(0)(0).ToString()]</InArgument>
-          </Assign.Value>
-        </Assign>
-      </Sequence>
-    </While>
-    <If Condition="[str_CurrentStatus = &quot;Approved&quot;]" DisplayName="If — Approved or Denied ?" sap:VirtualizedContainerService.HintSize="494.4,1257.6" sap2010:WorkflowViewState.IdRef="If_1">
+    <If Condition="[in_EmployeeID = &quot;&quot;]" sap:VirtualizedContainerService.HintSize="521.6,1845.6" sap2010:WorkflowViewState.IdRef="If_6">
       <If.Then>
-        <Sequence DisplayName="Then" sap:VirtualizedContainerService.HintSize="449.6,564" sap2010:WorkflowViewState.IdRef="Sequence_3">
+        <Sequence DisplayName="Then" sap:VirtualizedContainerService.HintSize="449.6,89.6" sap2010:WorkflowViewState.IdRef="Sequence_14">
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
-          <uga:SendEmailConnections ArgumentAttachmentPaths="{x:Null}" ArgumentAttachments="{x:Null}" AttachmentPaths="{x:Null}" Bcc="{x:Null}" Cc="{x:Null}" ConnectionAccountName="{x:Null}" ContinueOnError="{x:Null}" ReplyTo="{x:Null}" SingleAttachment="{x:Null}" TextBody="{x:Null}" AttachmentInputMode="UseExisting" AuthScopesInvalid="False" Body="[string.Format(&quot;&lt;P&gt;&lt;SPAN&gt;&amp;quot;Hello &amp;quot; + in_EmployeeID + &amp;quot;, your vacation request has been approved.&amp;quot;&lt;/SPAN&gt;&lt;/P&gt;&quot;)]" ConnectionId="043bd4e8-60db-4b3c-9622-f80513b0310c" DisplayName="Send Email" sap:VirtualizedContainerService.HintSize="416,504" sap2010:WorkflowViewState.IdRef="SendEmailConnections_2" Importance="Normal" InputType="HTML" SaveAsDraft="True" Subject="Vacation Request Approved" To="[New String(){&quot;rpagroup08@gmail.com&quot;}]" UseConnectionService="True">
-            <uga:SendEmailConnections.Attachments>
-              <InArgument x:TypeArguments="scg:IEnumerable(upr:IResource)" />
-            </uga:SendEmailConnections.Attachments>
-            <uga:SendEmailConnections.AttachmentsBackup>
-              <usau:BackupSlot x:TypeArguments="ugage:AttachmentInputMode" StoredValue="UseExisting">
-                <usau:BackupSlot.BackupValues>
-                  <scg:Dictionary x:TypeArguments="ugage:AttachmentInputMode, scg:List(x:Object)" />
-                </usau:BackupSlot.BackupValues>
-              </usau:BackupSlot>
-            </uga:SendEmailConnections.AttachmentsBackup>
-            <uga:SendEmailConnections.InputTypeBackup>
-              <usau:BackupSlot x:TypeArguments="ugage:BodyInputType" StoredValue="HTML">
-                <usau:BackupSlot.BackupValues>
-                  <scg:Dictionary x:TypeArguments="ugage:BodyInputType, scg:List(x:Object)" />
-                </usau:BackupSlot.BackupValues>
-              </usau:BackupSlot>
-            </uga:SendEmailConnections.InputTypeBackup>
-          </uga:SendEmailConnections>
         </Sequence>
       </If.Then>
       <If.Else>
-        <Sequence DisplayName="Else" sap:VirtualizedContainerService.HintSize="449.6,564" sap2010:WorkflowViewState.IdRef="Sequence_4">
+        <Sequence DisplayName="Else" sap:VirtualizedContainerService.HintSize="449.6,1617.6" sap2010:WorkflowViewState.IdRef="Sequence_15">
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
-          <uga:SendEmailConnections ArgumentAttachmentPaths="{x:Null}" ArgumentAttachments="{x:Null}" AttachmentPaths="{x:Null}" Bcc="{x:Null}" Cc="{x:Null}" ConnectionAccountName="{x:Null}" ContinueOnError="{x:Null}" ReplyTo="{x:Null}" SingleAttachment="{x:Null}" TextBody="{x:Null}" AttachmentInputMode="UseExisting" AuthScopesInvalid="False" Body="[string.Format(&quot;&lt;P&gt;&lt;SPAN&gt;&amp;quot;Hello &amp;quot; + in_EmployeeID + &amp;quot;, your vacation request has been denied.&amp;quot;&lt;/SPAN&gt;&lt;/P&gt;&quot;)]" ConnectionId="043bd4e8-60db-4b3c-9622-f80513b0310c" DisplayName="Send Email" sap:VirtualizedContainerService.HintSize="416,504" sap2010:WorkflowViewState.IdRef="SendEmailConnections_3" Importance="Normal" InputType="HTML" SaveAsDraft="True" Subject="Vacation Request Denied" To="[New String(){&quot;rpagroup08@gmail.com&quot;}]" UseConnectionService="True">
-            <uga:SendEmailConnections.Attachments>
-              <InArgument x:TypeArguments="scg:IEnumerable(upr:IResource)" />
-            </uga:SendEmailConnections.Attachments>
-            <uga:SendEmailConnections.AttachmentsBackup>
-              <usau:BackupSlot x:TypeArguments="ugage:AttachmentInputMode" StoredValue="UseExisting">
-                <usau:BackupSlot.BackupValues>
-                  <scg:Dictionary x:TypeArguments="ugage:AttachmentInputMode, scg:List(x:Object)" />
-                </usau:BackupSlot.BackupValues>
-              </usau:BackupSlot>
-            </uga:SendEmailConnections.AttachmentsBackup>
-            <uga:SendEmailConnections.InputTypeBackup>
-              <usau:BackupSlot x:TypeArguments="ugage:BodyInputType" StoredValue="HTML">
-                <usau:BackupSlot.BackupValues>
-                  <scg:Dictionary x:TypeArguments="ugage:BodyInputType, scg:List(x:Object)" />
-                </usau:BackupSlot.BackupValues>
-              </usau:BackupSlot>
-            </uga:SendEmailConnections.InputTypeBackup>
-          </uga:SendEmailConnections>
+          <ui:WriteCell Cell="[&quot;A&quot; + int_RowIndex.ToString]" DisplayName="Write Cell Workbook" sap:VirtualizedContainerService.HintSize="416,278.4" sap2010:WorkflowViewState.IdRef="WriteCell_14" SheetName="MasterLog" Text="[in_EmployeeID]" WorkbookPath="VacationDatabase.xlsx" />
+          <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="416,174.4" sap2010:WorkflowViewState.IdRef="LogMessage_6" Message="[&quot;A&quot; + int_RowIndex.ToString]" />
+          <ui:WriteCell Cell="[&quot;B&quot; + int_RowIndex.ToString]" DisplayName="Write Cell Workbook" sap:VirtualizedContainerService.HintSize="416,278.4" sap2010:WorkflowViewState.IdRef="WriteCell_15" SheetName="MasterLog" Text="[in_StartDate.ToString(&quot;dd/MM/yyyy&quot;)]" WorkbookPath="VacationDatabase.xlsx" />
+          <ui:WriteCell Cell="[&quot;C&quot; + int_RowIndex.ToString]" DisplayName="Write Cell Workbook" sap:VirtualizedContainerService.HintSize="416,278.4" sap2010:WorkflowViewState.IdRef="WriteCell_16" SheetName="MasterLog" Text="[in_EndDate.ToString(&quot;dd/MM/yyyy&quot;)]" WorkbookPath="VacationDatabase.xlsx" />
+          <ui:WriteCell Cell="[&quot;D&quot; + int_RowIndex.ToString]" DisplayName="Write Cell Workbook" sap:VirtualizedContainerService.HintSize="416,278.4" sap2010:WorkflowViewState.IdRef="WriteCell_17" SheetName="MasterLog" Text="Pending" WorkbookPath="VacationDatabase.xlsx" />
+          <ui:WriteCell Cell="[&quot;E&quot; + int_RowIndex.ToString]" DisplayName="Write Cell Workbook" sap:VirtualizedContainerService.HintSize="416,269.6" sap2010:WorkflowViewState.IdRef="WriteCell_18" SheetName="MasterLog" Text="[DateTime.Now.ToString(&quot;dd/MM/yyyy&quot;)]" WorkbookPath="VacationDatabase.xlsx" />
         </Sequence>
       </If.Else>
     </If>
+    <ui:ForEachRow ColumnNames="{x:Null}" CurrentIndex="{x:Null}" DataTable="[dt_Log]" DisplayName="For Each Row in Data Table" sap:VirtualizedContainerService.HintSize="521.6,4942.4" sap2010:WorkflowViewState.IdRef="ForEachRow_1">
+      <ui:ForEachRow.Body>
+        <ActivityAction x:TypeArguments="sd:DataRow">
+          <ActivityAction.Argument>
+            <DelegateInArgument x:TypeArguments="sd:DataRow" Name="CurrentRow" />
+          </ActivityAction.Argument>
+          <Sequence DisplayName="Corps" sap:VirtualizedContainerService.HintSize="520,4769.6" sap2010:WorkflowViewState.IdRef="Sequence_11">
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+            <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="486.4,174.4" sap2010:WorkflowViewState.IdRef="LogMessage_1" Message="[&quot;A new Row Begins&quot;]" />
+            <Assign DisplayName="Assign — int_RowIndex = dt_Log.Rows.Count + 2" sap:VirtualizedContainerService.HintSize="486.4,174.4" sap2010:WorkflowViewState.IdRef="Assign_13">
+              <Assign.To>
+                <OutArgument x:TypeArguments="x:Int32">[int_RowIndex]</OutArgument>
+              </Assign.To>
+              <Assign.Value>
+                <InArgument x:TypeArguments="x:Int32">[dt_Log.Rows.IndexOf(CurrentRow) + 2]</InArgument>
+              </Assign.Value>
+            </Assign>
+            <Assign sap:VirtualizedContainerService.HintSize="486.4,174.4" sap2010:WorkflowViewState.IdRef="Assign_5">
+              <Assign.To>
+                <OutArgument x:TypeArguments="x:String">[in_EmployeeID]</OutArgument>
+              </Assign.To>
+              <Assign.Value>
+                <InArgument x:TypeArguments="x:String">[CurrentRow("EmployeeID").ToString]</InArgument>
+              </Assign.Value>
+            </Assign>
+            <Assign sap:VirtualizedContainerService.HintSize="486.4,174.4" sap2010:WorkflowViewState.IdRef="Assign_6">
+              <Assign.To>
+                <OutArgument x:TypeArguments="x:String">[str_StartDate]</OutArgument>
+              </Assign.To>
+              <Assign.Value>
+                <InArgument x:TypeArguments="x:String">[CurrentRow("StartDate").ToString()]</InArgument>
+              </Assign.Value>
+            </Assign>
+            <Assign sap:VirtualizedContainerService.HintSize="486.4,174.4" sap2010:WorkflowViewState.IdRef="Assign_7">
+              <Assign.To>
+                <OutArgument x:TypeArguments="x:String">[str_EndDate]</OutArgument>
+              </Assign.To>
+              <Assign.Value>
+                <InArgument x:TypeArguments="x:String">[CurrentRow("EndDate").ToString()]</InArgument>
+              </Assign.Value>
+            </Assign>
+            <Assign sap:VirtualizedContainerService.HintSize="486.4,174.4" sap2010:WorkflowViewState.IdRef="Assign_8">
+              <Assign.To>
+                <OutArgument x:TypeArguments="x:String">[str_CurrentStatus]</OutArgument>
+              </Assign.To>
+              <Assign.Value>
+                <InArgument x:TypeArguments="x:String">[CurrentRow("Status").ToString]</InArgument>
+              </Assign.Value>
+            </Assign>
+            <Assign sap:VirtualizedContainerService.HintSize="486.4,174.4" sap2010:WorkflowViewState.IdRef="Assign_3">
+              <Assign.To>
+                <OutArgument x:TypeArguments="x:String">[Resolved]</OutArgument>
+              </Assign.To>
+              <Assign.Value>
+                <InArgument x:TypeArguments="x:String">[CurrentRow("Resolved").ToString]</InArgument>
+              </Assign.Value>
+            </Assign>
+            <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="486.4,174.4" sap2010:WorkflowViewState.IdRef="LogMessage_3" Message="[&quot;Variables acquired: &quot; + Resolved]" />
+            <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="486.4,174.4" sap2010:WorkflowViewState.IdRef="LogMessage_5" Message="[in_EmployeeID]" />
+            <If Condition="[String.IsNullOrWhiteSpace(CurrentRow(&quot;Resolved&quot;).ToString)]" DisplayName="If - Approved or Denied" sap:VirtualizedContainerService.HintSize="486.4,3140" sap2010:WorkflowViewState.IdRef="If_4">
+              <If.Then>
+                <Sequence DisplayName="Then" sap:VirtualizedContainerService.HintSize="484.8,2920.8" sap2010:WorkflowViewState.IdRef="Sequence_9">
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                  <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="451.2,174.4" sap2010:WorkflowViewState.IdRef="LogMessage_4" Message="[&quot;Resolving Action&quot;]" />
+                  <If Condition="[str_CurrentStatus = &quot;Pending&quot;]" sap:VirtualizedContainerService.HintSize="451.2,1893.6" sap2010:WorkflowViewState.IdRef="If_5">
+                    <If.Then>
+                      <Sequence DisplayName="Then" sap:VirtualizedContainerService.HintSize="449.6,564" sap2010:WorkflowViewState.IdRef="Sequence_12">
+                        <sap:WorkflowViewStateService.ViewState>
+                          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                          </scg:Dictionary>
+                        </sap:WorkflowViewStateService.ViewState>
+                        <uga:SendEmailConnections ArgumentAttachmentPaths="{x:Null}" ArgumentAttachments="{x:Null}" AttachmentPaths="{x:Null}" Attachments="{x:Null}" Bcc="{x:Null}" Cc="{x:Null}" ConnectionAccountName="{x:Null}" ContinueOnError="{x:Null}" ReplyTo="{x:Null}" SingleAttachment="{x:Null}" TextBody="{x:Null}" AttachmentInputMode="UseExisting" AuthScopesInvalid="False" Body="[&quot;Employee &quot; + in_EmployeeID + &quot; requested vacation from &quot; + str_StartDate + &quot; to &quot; + str_EndDate + &quot;. Please update the status In Excel.&quot;]" ConnectionId="043bd4e8-60db-4b3c-9622-f80513b0310c" DisplayName="Send Email" sap:VirtualizedContainerService.HintSize="416,504" sap2010:WorkflowViewState.IdRef="SendEmailConnections_1" Importance="Normal" InputType="HTML" SaveAsDraft="False" Subject="[&quot;Vacation Request Pending -- &quot; + in_EmployeeID]" To="[New String(){&quot;rpagroup08@gmail.com&quot;}]" UseConnectionService="True">
+                          <uga:SendEmailConnections.AttachmentsBackup>
+                            <usau:BackupSlot x:TypeArguments="ugage:AttachmentInputMode" StoredValue="UseExisting">
+                              <usau:BackupSlot.BackupValues>
+                                <scg:List x:TypeArguments="x:Object" x:Key="UseExisting" Capacity="1">
+                                  <x:Null />
+                                </scg:List>
+                                <scg:List x:TypeArguments="x:Object" x:Key="Builder" Capacity="1">
+                                  <x:Null />
+                                </scg:List>
+                              </usau:BackupSlot.BackupValues>
+                            </usau:BackupSlot>
+                          </uga:SendEmailConnections.AttachmentsBackup>
+                          <uga:SendEmailConnections.InputTypeBackup>
+                            <usau:BackupSlot x:TypeArguments="ugage:BodyInputType" StoredValue="HTML">
+                              <usau:BackupSlot.BackupValues>
+                                <scg:List x:TypeArguments="x:Object" x:Key="HTML" Capacity="1">
+                                  <InArgument x:TypeArguments="x:String">[string.Format("&lt;P&gt;&lt;SPAN&gt;&amp;quot;&lt;/SPAN&gt;&lt;SPAN&gt;Employee &amp;quot; + in_EmployeeID + &amp;quot; requested vacation from &amp;quot; + &lt;/SPAN&gt;&lt;SPAN&gt;str&lt;/SPAN&gt;&lt;SPAN&gt;_StartDate&lt;/SPAN&gt;&lt;SPAN&gt;.ToString(&amp;#39;dd/MM/yyyy&amp;#39;)&lt;/SPAN&gt;&lt;SPAN&gt;+ &amp;quot; to &amp;quot; + &lt;/SPAN&gt;&lt;SPAN&gt;str&lt;/SPAN&gt;&lt;SPAN&gt;_EndDate&lt;/SPAN&gt;&lt;SPAN&gt;.ToString(&amp;#39;dd/MM/yyyy&amp;#39;)&lt;/SPAN&gt;&lt;SPAN&gt;&amp;quot;. Please update the status in Excel.&lt;/SPAN&gt;&lt;SPAN&gt;&amp;quot;&lt;/SPAN&gt;&lt;/P&gt;")]</InArgument>
+                                </scg:List>
+                                <scg:List x:TypeArguments="x:Object" x:Key="TEXT" Capacity="1">
+                                  <x:Null />
+                                </scg:List>
+                              </usau:BackupSlot.BackupValues>
+                            </usau:BackupSlot>
+                          </uga:SendEmailConnections.InputTypeBackup>
+                        </uga:SendEmailConnections>
+                      </Sequence>
+                    </If.Then>
+                    <If.Else>
+                      <Sequence DisplayName="Else" sap:VirtualizedContainerService.HintSize="449.6,1191.2" sap2010:WorkflowViewState.IdRef="Sequence_13">
+                        <sap:WorkflowViewStateService.ViewState>
+                          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                          </scg:Dictionary>
+                        </sap:WorkflowViewStateService.ViewState>
+                        <uga:SendEmailConnections ArgumentAttachmentPaths="{x:Null}" ArgumentAttachments="{x:Null}" AttachmentPaths="{x:Null}" Bcc="{x:Null}" Cc="{x:Null}" ConnectionAccountName="{x:Null}" ContinueOnError="{x:Null}" ReplyTo="{x:Null}" SingleAttachment="{x:Null}" TextBody="{x:Null}" AttachmentInputMode="UseExisting" AuthScopesInvalid="False" Body="[&quot;Hello &quot; + in_EmployeeID  + &quot; your vacation request has been &quot; + str_CurrentStatus + &quot;.&quot;]" ConnectionId="043bd4e8-60db-4b3c-9622-f80513b0310c" DisplayName="Send Email" sap:VirtualizedContainerService.HintSize="416,512.8" sap2010:WorkflowViewState.IdRef="SendEmailConnections_2" Importance="Normal" InputType="HTML" SaveAsDraft="False" Subject="[&quot;Vacation Request &quot; + str_CurrentStatus]" To="[New String(){&quot;rpagroup08@gmail.com&quot;}]" UseConnectionService="True">
+                          <uga:SendEmailConnections.Attachments>
+                            <InArgument x:TypeArguments="scg:IEnumerable(upr:IResource)" />
+                          </uga:SendEmailConnections.Attachments>
+                          <uga:SendEmailConnections.AttachmentsBackup>
+                            <usau:BackupSlot x:TypeArguments="ugage:AttachmentInputMode" StoredValue="UseExisting">
+                              <usau:BackupSlot.BackupValues>
+                                <scg:Dictionary x:TypeArguments="ugage:AttachmentInputMode, scg:List(x:Object)" />
+                              </usau:BackupSlot.BackupValues>
+                            </usau:BackupSlot>
+                          </uga:SendEmailConnections.AttachmentsBackup>
+                          <uga:SendEmailConnections.InputTypeBackup>
+                            <usau:BackupSlot x:TypeArguments="ugage:BodyInputType" StoredValue="HTML">
+                              <usau:BackupSlot.BackupValues>
+                                <scg:Dictionary x:TypeArguments="ugage:BodyInputType, scg:List(x:Object)" />
+                              </usau:BackupSlot.BackupValues>
+                            </usau:BackupSlot>
+                          </uga:SendEmailConnections.InputTypeBackup>
+                        </uga:SendEmailConnections>
+                        <Assign sap:VirtualizedContainerService.HintSize="416,174.4" sap2010:WorkflowViewState.IdRef="Assign_11">
+                          <Assign.To>
+                            <OutArgument x:TypeArguments="x:String">[Resolved]</OutArgument>
+                          </Assign.To>
+                          <Assign.Value>
+                            <InArgument x:TypeArguments="x:String">["Yes"]</InArgument>
+                          </Assign.Value>
+                        </Assign>
+                        <Assign sap:VirtualizedContainerService.HintSize="416,174.4" sap2010:WorkflowViewState.IdRef="Assign_12">
+                          <Assign.To>
+                            <OutArgument x:TypeArguments="x:Object">[CurrentRow("Resolved")]</OutArgument>
+                          </Assign.To>
+                          <Assign.Value>
+                            <InArgument x:TypeArguments="x:Object">[Resolved.ToString]</InArgument>
+                          </Assign.Value>
+                        </Assign>
+                        <ui:WriteCell Cell="[&quot;G&quot; &amp; int_RowIndex.ToString]" DisplayName="Write Cell Workbook" sap:VirtualizedContainerService.HintSize="416,269.6" sap2010:WorkflowViewState.IdRef="WriteCell_13" SheetName="MasterLog" Text="[Resolved]" WorkbookPath="VacationDatabase.xlsx" />
+                      </Sequence>
+                    </If.Else>
+                  </If>
+                  <Assign sap:VirtualizedContainerService.HintSize="451.2,174.4" sap2010:WorkflowViewState.IdRef="Assign_10">
+                    <Assign.To>
+                      <OutArgument x:TypeArguments="x:String">[Resolved]</OutArgument>
+                    </Assign.To>
+                    <Assign.Value>
+                      <InArgument x:TypeArguments="x:String">["Yes"]</InArgument>
+                    </Assign.Value>
+                  </Assign>
+                  <Assign sap:VirtualizedContainerService.HintSize="451.2,174.4" sap2010:WorkflowViewState.IdRef="Assign_9">
+                    <Assign.To>
+                      <OutArgument x:TypeArguments="x:Object">[CurrentRow("Resolved")]</OutArgument>
+                    </Assign.To>
+                    <Assign.Value>
+                      <InArgument x:TypeArguments="x:Object">[Resolved.ToString]</InArgument>
+                    </Assign.Value>
+                  </Assign>
+                  <ui:WriteCell Cell="[&quot;G&quot; &amp; int_RowIndex.ToString]" DisplayName="Write Cell Workbook" sap:VirtualizedContainerService.HintSize="451.2,278.4" sap2010:WorkflowViewState.IdRef="WriteCell_12" SheetName="MasterLog" Text="[Resolved]" WorkbookPath="VacationDatabase.xlsx" />
+                  <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="451.2,165.6" sap2010:WorkflowViewState.IdRef="LogMessage_2" Message="[CurrentRow(&quot;Resolved&quot;).ToString]" />
+                </Sequence>
+              </If.Then>
+              <If.Else>
+                <Sequence DisplayName="Else" sap:VirtualizedContainerService.HintSize="484.8,89.6" sap2010:WorkflowViewState.IdRef="Sequence_10">
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                </Sequence>
+              </If.Else>
+            </If>
+          </Sequence>
+        </ActivityAction>
+      </ui:ForEachRow.Body>
+    </ui:ForEachRow>
   </Sequence>
 </Activity>

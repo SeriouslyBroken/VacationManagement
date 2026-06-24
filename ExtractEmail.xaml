@@ -30,8 +30,6 @@
       <x:String>UiPath.Core</x:String>
       <x:String>UiPath.Core.Activities</x:String>
       <x:String>System.Windows.Markup</x:String>
-      <x:String>GlobalVariablesNamespace</x:String>
-      <x:String>GlobalConstantsNamespace</x:String>
       <x:String>UiPath.MicrosoftOffice365.Activities.Mail</x:String>
       <x:String>UiPath.MicrosoftOffice365.Activities.Mail.Enums</x:String>
       <x:String>UiPath.MicrosoftOffice365.Models</x:String>
@@ -61,6 +59,8 @@
       <x:String>UiPath.GSuite</x:String>
       <x:String>System.Text.RegularExpressions</x:String>
       <x:String>System.Globalization</x:String>
+      <x:String>GlobalVariablesNamespace</x:String>
+      <x:String>GlobalConstantsNamespace</x:String>
     </sco:Collection>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
@@ -120,7 +120,7 @@
       <x:Boolean x:Key="ShouldExpandAll">True</x:Boolean>
     </scg:Dictionary>
   </sap:WorkflowViewStateService.ViewState>
-  <Sequence DisplayName="ExtractEmail" sap:VirtualizedContainerService.HintSize="1065.2,2656.8" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence DisplayName="ExtractEmail" sap:VirtualizedContainerService.HintSize="898,2656.8" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -211,7 +211,8 @@
                 <OutArgument x:TypeArguments="s:DateTime">[dt_StartDate]</OutArgument>
               </Assign.To>
               <Assign.Value>
-                <InArgument x:TypeArguments="s:DateTime">[DateTime.ParseExact(str_StartDateText.Trim(), "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture)]</InArgument>
+                <InArgument x:TypeArguments="s:DateTime" xml:space="preserve">[If(String.IsNullOrEmpty(str_StartDateText.Trim()), DateTime.MinValue,
+         DateTime.ParseExact(str_StartDateText.Trim(), "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture))]</InArgument>
               </Assign.Value>
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -225,7 +226,8 @@
                 <OutArgument x:TypeArguments="s:DateTime">[dt_EndDate]</OutArgument>
               </Assign.To>
               <Assign.Value>
-                <InArgument x:TypeArguments="s:DateTime">[DateTime.ParseExact(str_EndDateText.Trim(), "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture)]</InArgument>
+                <InArgument x:TypeArguments="s:DateTime" xml:space="preserve">[If(String.IsNullOrEmpty(str_EndDateText.Trim()), DateTime.MinValue,
+         DateTime.ParseExact(str_EndDateText.Trim(), "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture))]</InArgument>
               </Assign.Value>
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
