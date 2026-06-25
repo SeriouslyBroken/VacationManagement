@@ -110,7 +110,7 @@
       <AssemblyReference>UiPath.Workflow</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="ManagerReview" sap:VirtualizedContainerService.HintSize="540.4,7212" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence DisplayName="ManagerReview" sap:VirtualizedContainerService.HintSize="687.6,7673.6" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="sd:DataTable" Name="dt_dataTable" />
       <Variable x:TypeArguments="x:String" Name="Resolved" />
@@ -160,7 +160,14 @@
         </Sequence>
       </If.Else>
     </If>
-    <ui:ForEachRow ColumnNames="{x:Null}" CurrentIndex="{x:Null}" DataTable="[dt_Log]" DisplayName="For Each Row in Data Table" sap:VirtualizedContainerService.HintSize="521.6,4942.4" sap2010:WorkflowViewState.IdRef="ForEachRow_1">
+    <ui:ReadRange AddHeaders="True" DataTable="[dt_Log]" DisplayName="Read Range Workbook" sap:VirtualizedContainerService.HintSize="521.6,226.4" sap2010:WorkflowViewState.IdRef="ReadRange_3" SheetName="MasterLog" WorkbookPath="VacationDatabase.xlsx">
+      <ui:ReadRange.Range>
+        <InArgument x:TypeArguments="x:String">
+          <Literal x:TypeArguments="x:String" Value="" />
+        </InArgument>
+      </ui:ReadRange.Range>
+    </ui:ReadRange>
+    <ui:ForEachRow ColumnNames="{x:Null}" CurrentIndex="{x:Null}" DataTable="[dt_Log]" DisplayName="For Each Row in Data Table" sap:VirtualizedContainerService.HintSize="521.6,4951.2" sap2010:WorkflowViewState.IdRef="ForEachRow_1">
       <ui:ForEachRow.Body>
         <ActivityAction x:TypeArguments="sd:DataRow">
           <ActivityAction.Argument>
@@ -348,5 +355,6 @@
         </ActivityAction>
       </ui:ForEachRow.Body>
     </ui:ForEachRow>
+    <ui:ReadRange AddHeaders="True" DataTable="[dt_Log]" DisplayName="Read Range — MasterLog → dt_Log" sap:VirtualizedContainerService.HintSize="521.6,226.4" sap2010:WorkflowViewState.IdRef="ReadRange_2" Range="[&quot;&quot;]" SheetName="[&quot;MasterLog&quot;]" WorkbookPath="[&quot;VacationDatabase.xlsx&quot;]" />
   </Sequence>
 </Activity>
