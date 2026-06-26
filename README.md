@@ -15,10 +15,18 @@ This project automates the ingestion, validation, logging, and follow-up trackin
 
 The automation is modularized into four primary workflow components invoked by `Main.xaml`:
 
+
 1. **ExtractEmail.xaml**: Polls the inbox, matches target unread request emails, and parses text payloads.
 2. **ConflictCheck.xaml**: Centralized data validation engine verifying string formats and date chronological alignment.
 3. **ManagerReview.xaml**: Formats data strings and logs fresh requests as Pending to the database workbook.
 4. **SendMail.xaml**: Periodic review engine monitoring row resolution status, employee messaging, and manager escalation intervals.
+
+## Format of Mail
+Mail sent to the robot must be formatted following to ensure that no validation errors are thrown. 
+**Subject:** Vacation Request
+**EmployeeID:** EMP[XXX]
+**Start Date Vacation:** 0[DD/MM/YYYY]
+**End Date Vacation** [DD/MM/YYYY]
 
 ---
 
