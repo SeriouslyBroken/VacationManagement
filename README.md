@@ -7,6 +7,7 @@ This project automates the ingestion, validation, logging, and follow-up trackin
 * UiPath Studio with the following package dependencies:
   * UiPath.Mail.Activities
   * UiPath.Excel.Activities
+  * UiPath.GSuite.Activities
 * A Google Gmail account with OAuth authentication scopes configured for reading, composing, and sending emails.
 * Microsoft Excel database workbook.
 
