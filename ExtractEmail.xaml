@@ -171,7 +171,7 @@
                 <OutArgument x:TypeArguments="x:String">[str_EmployeeID]</OutArgument>
               </Assign.To>
               <Assign.Value>
-                <InArgument x:TypeArguments="x:String">[System.Text.RegularExpressions.Regex.Match(str_MailBody, "EmployeeID\s*:\s*([A-Za-z0-9]+)").Groups(1).Value.Trim]</InArgument>
+                <InArgument x:TypeArguments="x:String">[System.Text.RegularExpressions.Regex.Match(str_MailBody, "EMP\d{3}", System.Text.RegularExpressions.RegexOptions.IgnoreCase).Value]</InArgument>
               </Assign.Value>
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -185,7 +185,7 @@
                 <OutArgument x:TypeArguments="x:String">[str_StartDateText]</OutArgument>
               </Assign.To>
               <Assign.Value>
-                <InArgument x:TypeArguments="x:String">[System.Text.RegularExpressions.Regex.Match(str_MailBody, "Start\s*Date\s*Vacation\s*:\s*([0-9./-]+)").Groups(1).Value.Trim]</InArgument>
+                <InArgument x:TypeArguments="x:String">[System.Text.RegularExpressions.Regex.Match(str_MailBody, "Start Date Vacation:\s*(\d{2}/\d{2}/\d{4})", System.Text.RegularExpressions.RegexOptions.IgnoreCase).Groups(1).Value]</InArgument>
               </Assign.Value>
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -199,7 +199,7 @@
                 <OutArgument x:TypeArguments="x:String">[str_EndDateText]</OutArgument>
               </Assign.To>
               <Assign.Value>
-                <InArgument x:TypeArguments="x:String">[System.Text.RegularExpressions.Regex.Match(str_MailBody, "End\s*Date\s*Vacation\s*:\s*([0-9./-]+)").Groups(1).Value.Trim]</InArgument>
+                <InArgument x:TypeArguments="x:String">[System.Text.RegularExpressions.Regex.Match(str_MailBody, "End Date Vacation:\s*(\d{2}/\d{2}/\d{4})", System.Text.RegularExpressions.RegexOptions.IgnoreCase).Groups(1).Value]</InArgument>
               </Assign.Value>
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
