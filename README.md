@@ -1,27 +1,28 @@
 # Vacation Request Management Automation
 
-This project automates the ingestion, validation, logging, and follow-up tracking of employee vacation requests using UiPath Studio and integration with Gmail and Excel.
+This project automates the ingestion, validation, logging, and follow-up tracking of employee vacation requests using UiPath Studio, Gmail, and Excel.
 
 ## Prerequisites
 
 * UiPath Studio with the following package dependencies:
   * UiPath.Mail.Activities
   * UiPath.Excel.Activities
-  * UiPath.Testing.Activities (for environment runtimes)
 * A Google Gmail account with OAuth authentication scopes configured for reading, composing, and sending emails.
-* Microsoft Excel (or access to .xlsx files locally).
+* Microsoft Excel database workbook.
 
 ## Project Architecture
 
-The automation is modularized into four primary workflow components invoked by `Main.xaml`:
+The automation is split into four sub-workflows invoked by `Main.xaml`:
 
+1. **ExtractEmail.xaml**: Polls the inbox, filters target emails, and extracts text inputs.
+2. **ValidationCheck.xaml**: Evaluates extracted values against formatting and chronological constraints.
+3. **ManagerReview.xaml**: Logs new pending vacation requests directly into the spreadsheet.
+4. **SendMail.xaml**: Reviews row resolution status and automates employee notifications and manager escalation tracking.
 
-1. **ExtractEmail.xaml**: Polls the inbox, matches target unread request emails, and parses text payloads.
-2. **ConflictCheck.xaml**: Centralized data validation engine verifying string formats and date chronological alignment.
-3. **ManagerReview.xaml**: Formats data strings and logs fresh requests as Pending to the database workbook.
-4. **SendMail.xaml**: Periodic review engine monitoring row resolution status, employee messaging, and manager escalation intervals.
+---
 
 ## Format of Mail
+
 Mail sent to the robot must be formatted following to ensure that no validation errors are thrown. 
 
 **Subject:** Vacation Request
@@ -36,65 +37,83 @@ Mail sent to the robot must be formatted following to ensure that no validation 
 
 ## Configuration and Setup Parameters
 
-To run this project, the following variables and arguments must be configured inside UiPath Studio.
-
 ### Global Variables (Main.xaml)
 
-These variables coordinate data movement between individual sub-workflows across the main orchestration loop:
+These variables track and transfer data across the main sequence loop container:
 
-| Variable Name | Type | Description / Default Value |
+| Variable Name | Type | Description |
 | :--- | :--- | :--- |
-| `main_EmployeeID` | String | Stores parsed employee identification strings. |
-| `main_StartDate` | DateTime | Stores processed vacation start timeline. |
-| `main_EndDate` | DateTime | Stores processed vacation end timeline. |
-| `main_IsConflict` | Boolean | True if input criteria or dates fail centralized validation rules. |
+| `main_EmployeeID` | String | Stores extracted employee ID string. |
+| `main_StartDate` | DateTime | Stores processed vacation start date. |
+| `main_EndDate` | DateTime | Stores processed vacation end date. |
+| `main_IsConflict` | Boolean | Flags validation or logical date errors. |
 
-### Sub-Workflow Arguments
+### Workflow Arguments
 
 #### 1. ExtractEmail.xaml Arguments
-* `out_EmployeeID` (Direction: Out, Type: String): Passes parsed ID to Main.
-* `out_StartDate` (Direction: Out, Type: DateTime): Passes converted start date to Main.
-* `out_EndDate` (Direction: Out, Type: DateTime): Passes converted end date to Main.
+* `out_EmployeeID` (Out, String): Passes extracted employee ID to Main.
+* `out_StartDate` (Out, DateTime): Passes extracted start date to Main.
+* `out_EndDate` (Out, DateTime): Passes extracted end date to Main.
 
-#### 2. ConflictCheck.xaml Arguments
-* `in_EmployeeID` (Direction: In, Type: String): Binds to `main_EmployeeID`.
-* `in_StartDate` (Direction: In, Type: DateTime): Binds to `main_StartDate`.
-* `in_EndDate` (Direction: In, Type: DateTime): Binds to `main_EndDate`.
-* `out_IsConflict` (Direction: Out, Type: Boolean): Returns verification state to `main_IsConflict`.
+#### 2. ValidationCheck.xaml Arguments
+* `in_EmployeeID` (In, String): Receives `main_EmployeeID`.
+* `in_StartDate` (In, DateTime): Receives `main_StartDate`.
+* `in_EndDate` (In, DateTime): Receives `main_EndDate`.
+* `out_IsConflict` (Out, Boolean): Returns evaluation status to `main_IsConflict`.
 
 #### 3. ManagerReview.xaml Arguments
-* `in_EmployeeID` (Direction: In, Type: String)
-* `in_StartDate` (Direction: In, Type: DateTime)
-* `in_EndDate` (Direction: In, Type: DateTime)
+* `in_EmployeeID` (In, String): Employee identification token.
+* `in_StartDate` (In, DateTime): Confirmed leave start time.
+* `in_EndDate` (In, DateTime): Confirmed leave end time.
+* `in_IsConflict` (In, Boolean): Initial validation flag tracking state.
+* `str_StartDate` (In, String): Unused formatting container argument.
+* `str_EndDate` (In, String): Unused formatting container argument.
+
+#### 4. SendMail.xaml Arguments
+* No external parameters needed. The process reads log metrics directly from the workbook database.
 
 ---
 
-## Local Environmental Parameters
+### Local Sequence Variables
 
-### Local Workbook Storage
-* **File Name**: `VacationDatabase.xlsx`
-* **Target Worksheet**: `MasterLog`
-* **Required Column Schema**:
-  * Column A: `EmployeeID`
-  * Column B: `StartDate`
-  * Column C: `EndDate`
-  * Column D: `Status`
-  * Column E: `Timestamp`
-  * Column F: `ManagerComments`
-  * Column G: `Resolved`
+These local variables handle isolated tasks within their specific workflow files:
 
-*Note: The Excel file must reside in the root directory of the project folder (the same directory containing project.json) for relative paths to resolve correctly.*
+#### ExtractEmail.xaml Local Variables
+* `str_MailBody` (String): Stores the raw body text of the current email.
+* `str_EmployeeID` (String): Temporary text placeholder for regex matching.
+* `str_StartDateText` (String): Extracted text matching the start date string.
+* `str_EndDateText` (String): Extracted text matching the end date string.
+* `dt_StartDate` (DateTime): Temporal date variable checking format parsing validation.
+* `dt_EndDate` (DateTime): Temporal date variable checking format parsing validation.
 
-### Local Email Activity Settings
-* **Account Integration**: Connected via Google Workspace / Gmail integration matching the workflow account profile.
-* **Inbound Filter**: The filter criteria inside `ExtractEmail.xaml` must be set to look for unread subjects containing `"vacation request"`.
-* **Activity Properties**: Ensure `Mark As Read` and `Unread Only` properties are checked True within the email loop.
+#### ValidationCheck.xaml Local Variables
+* `dt_DataTable` (DataTable): Structural variable data frame placeholder.
+
+#### ManagerReview.xaml Local Variables
+* `dt_dataTable` (DataTable): Unused schema tracking data frame.
+* `Resolved` (String): State string tracking closed records.
+* `Comment` (String): Standard commentary tracking placeholder.
+* `dt_Log` (DataTable): Holds read ranges from the MasterLog worksheet database.
+* `int_RowIndex` (Int32): Tracks target write coordinates inside the loop context.
+* `str_CurrentStatus` (String): Tracking token representing manager selection.
+* `dt_StatusCheck` (DataTable): Temporary validation table for updates.
+
+#### SendMail.xaml Local Variables
+* `dt_BatchLog` (DataTable): Houses read information from the spreadsheet database sheet.
+* `int_CurrentLine` (Int32): Translates data row index into active Excel rows.
 
 ---
 
-## Deployment and Execution
+## Workbook Schema Parameters
 
-1. Close the local `VacationDatabase.xlsx` file on your desktop machine to avoid database execution write blocks.
-2. Open the project root folder inside UiPath Studio.
-3. Open `Main.xaml`.
-4. Click Run or Debug to initiate the execution processing chain.
+* **Path Location**: Root directory folder of the project.
+* **File Target**: `VacationDatabase.xlsx`.
+* **Worksheet Target**: `MasterLog`.
+* **Column Positions**:
+  * Column A: EmployeeID
+  * Column B: StartDate
+  * Column C: EndDate
+  * Column D: Status
+  * Column E: Timestamp
+  * Column F: ManagerComments
+  * Column G: Resolved
