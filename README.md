@@ -23,9 +23,13 @@ The automation is modularized into four primary workflow components invoked by `
 
 ## Format of Mail
 Mail sent to the robot must be formatted following to ensure that no validation errors are thrown. 
+
 **Subject:** Vacation Request
+
 **EmployeeID:** EMP[XXX]
+
 **Start Date Vacation:** 0[DD/MM/YYYY]
+
 **End Date Vacation** [DD/MM/YYYY]
 
 ---
